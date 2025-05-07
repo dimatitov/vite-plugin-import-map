@@ -19,13 +19,13 @@ A simple and flexible Vite plugin to inject an [Import Map](https://developer.mo
 ## 📦 Installation
 
 ```bash
-npm install vite-plugin-import-map --save-dev
+npm install @titovdima/vite-plugin-import-map --save-dev
 ```
 
 or
 
 ```bash
-yarn add vite-plugin-import-map --dev
+yarn add @titovdima/vite-plugin-import-map --dev
 ```
 
 ---
