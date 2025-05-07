@@ -3,7 +3,13 @@ import path from "path";
 import fs from "fs";
 
 export interface ImportMapPluginOptions {
-  imports: Record<string, string>;
+  /**
+   * Directly specify import map entries. Optional, can also use importMapPath.
+   */
+  imports?: Record<string, string>;
+  /**
+   * Path to an import map JSON file. Optional, can also use imports.
+   */
   importMapPath?: string;
 }
 
@@ -12,44 +18,61 @@ export default function importMapPlugin(
 ): Plugin {
   const { imports, importMapPath } = options;
 
+  let resolvedImports: Record<string, string> = imports ?? {};
+
   return {
     name: "vite-plugin-import-map",
     enforce: "pre",
 
-    transformIndexHtml(html) {
-      let importMapJson = JSON.stringify({ imports });
-
+    config() {
       if (importMapPath) {
         try {
-          const resolvedPath = path.resolve(importMapPath);
-
+          const resolvedPath = path.resolve(process.cwd(), importMapPath);
           const fileContents = fs.readFileSync(resolvedPath, "utf-8");
-
           const parsedData = JSON.parse(fileContents);
-
-          importMapJson = JSON.stringify(parsedData);
+          if (parsedData.imports) {
+            resolvedImports = parsedData.imports;
+            console.log("Import aliases:", resolvedImports);
+          }
         } catch (error) {
           console.error("Не удалось загрузить import-map.json:", error);
         }
       }
 
-      const scriptTag = `<script type="importmap">${importMapJson}</script>`;
-      return html.replace("</head>", `${scriptTag}</head>`);
-    },
+      resolvedImports = Object.fromEntries(
+        Object.entries(resolvedImports).map(([key, value]) => {
+          if (!value.startsWith("/")) {
+            value = path.resolve(process.cwd(), value);
+          }
 
-    config() {
+          return [key, value];
+        })
+      );
+
       return {
         resolve: {
-          alias: Object.entries(imports).map(([key, value]) => ({
-            find: key,
-            replacement: value,
-          })),
+          alias: Object.entries(resolvedImports).map(([key, value]) => {
+            const adjustedKey = new RegExp(`^${key}`);
+            return {
+              find: adjustedKey,
+              replacement: value,
+            };
+          }),
         },
       };
     },
 
+    transformIndexHtml(html) {
+      const importMapJson = JSON.stringify({ imports: resolvedImports });
+      const scriptTag = `<script type="importmap">${importMapJson}</script>`;
+      return html.replace("</head>", `${scriptTag}</head>`);
+    },
+
     handleHotUpdate({ file, server }) {
-      if (importMapPath && path.resolve(file) === path.resolve(importMapPath)) {
+      if (
+        importMapPath &&
+        path.resolve(file) === path.resolve(process.cwd(), importMapPath)
+      ) {
         server.ws.send({
           type: "full-reload",
         });

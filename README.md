@@ -1,4 +1,4 @@
-# `vite-plugin-import-map`
+<file name=0 path=/Users/dimatitov/WebstormProjects/vite-plugin-import-map/README.md># `vite-plugin-import-map`
 
 [![npm version](https://img.shields.io/npm/v/@titovdima/vite-plugin-import-map.svg)](https://www.npmjs.com/package/@titovdima/vite-plugin-import-map)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -69,6 +69,7 @@ yarn add @titovdima/vite-plugin-import-map --dev
 
 You can configure the plugin in one of two ways — either by providing an inline `imports` object directly in your `vite.config.ts`, or by specifying a path to an external `import-map.json` file. **Do not use both at once.**
 
+
 ### Option 1: Inline Import Map (via `vite.config.ts`)
 
 ```ts
@@ -101,6 +102,14 @@ You can define the import map in a separate `import-map.json` file at the projec
 }
 ```
 
+### 🔤 Supported Format for Imports
+
+The keys in the import map support the following formats:
+
+- Exact match: `"@components": "src/components"` or `"@components": "./src/components"` or `"@components": "/src/components"`
+- **Note:** All of the above will be normalized and resolved based on the project root.
+- **Important:** Prefix matches (e.g. `"@components/"`) are **not** currently supported.
+
 Then use the plugin like this:
 
 ```ts
@@ -132,10 +141,10 @@ import logo from "@assets/logo.png";
 
 ## ⚙️ Plugin Options
 
-| Option    | Type                     | Description                                        |
-| --------- | ------------------------ | -------------------------------------------------- |
-| `imports` | `Record<string, string>` | (optional) Inline import map                       |
-| `file`    | `string`                 | (optional) Path to external `import-map.json` file |
+| Option    | Type                     | Description                                                                        |
+| --------- | ------------------------ | ---------------------------------------------------------------------------------- |
+| `imports` | `Record<string, string>` | (optional) Inline import map. Only absolute paths starting with '/' are supported. |
+| `file`    | `string`                 | (optional) Path to external `import-map.json` file                                 |
 
 > You must choose **either** `imports` **or** `file` — using both at the same time is not supported and will throw an error. This design prevents ambiguity and ensures the import map is sourced from only one location.
 
@@ -161,3 +170,4 @@ Planned features:
 ## 📄 License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+</file>
