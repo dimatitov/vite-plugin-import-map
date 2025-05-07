@@ -1,5 +1,6 @@
 import { Plugin } from "vite";
 import path from "path";
+import fs from "fs";
 
 export interface ImportMapPluginOptions {
   imports: Record<string, string>;
@@ -20,8 +21,13 @@ export default function importMapPlugin(
 
       if (importMapPath) {
         try {
-          const importMapModule = require(path.resolve(importMapPath));
-          importMapJson = JSON.stringify(importMapModule);
+          const resolvedPath = path.resolve(importMapPath);
+
+          const fileContents = fs.readFileSync(resolvedPath, "utf-8");
+
+          const parsedData = JSON.parse(fileContents);
+
+          importMapJson = JSON.stringify(parsedData);
         } catch (error) {
           console.error("Не удалось загрузить import-map.json:", error);
         }
@@ -43,7 +49,7 @@ export default function importMapPlugin(
     },
 
     handleHotUpdate({ file, server }) {
-      if (importMapPath && file === importMapPath) {
+      if (importMapPath && path.resolve(file) === path.resolve(importMapPath)) {
         server.ws.send({
           type: "full-reload",
         });
