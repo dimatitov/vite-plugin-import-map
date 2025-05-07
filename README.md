@@ -1,6 +1,6 @@
 # `vite-plugin-import-map`
 
-[![npm version](https://img.shields.io/npm/v/vite-plugin-import-map.svg)](https://www.npmjs.com/package/@titovdima/vite-plugin-import-map)
+[![npm version](https://img.shields.io/npm/v/@titovdima/vite-plugin-import-map.svg)](https://www.npmjs.com/package/@titovdima/vite-plugin-import-map)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A simple and flexible Vite plugin to inject an [Import Map](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap) into your project. Supports both inline import maps and external `import-map.json` file. Automatically reloads the Vite dev server when the map is updated.
@@ -19,6 +19,7 @@ A simple and flexible Vite plugin to inject an [Import Map](https://developer.mo
 ## 💎 Value Proposition
 
 Modern frontends often rely on import aliases for better DX and cleaner project structures. TypeScript supports this via `tsconfig.json`, but these aliases are **only for type checking and editor autocomplete** — they do **not** affect how modules are actually resolved in the browser or by Vite during development and production.
+
 This plugin closes that gap by:
 
 - Injecting a real `<script type="importmap">` into your app's HTML
@@ -35,6 +36,7 @@ Together, this ensures:
 ### 🧠 TypeScript integration
 
 To keep type resolution working in your IDE, continue to define aliases in your `tsconfig.json` like so:
+
 ```json
 {
   "compilerOptions": {
@@ -47,7 +49,7 @@ To keep type resolution working in your IDE, continue to define aliases in your 
 }
 ```
 
-This way, **TypeScript handles type resolution**, and the plugin takes care of **runtime resolution**.
+Then let the plugin handle runtime resolution seamlessly.
 
 ## 📦 Installation
 
