@@ -38,7 +38,7 @@ You can configure the plugin in one of two ways — either by providing an inlin
 
 ```ts
 import { defineConfig } from "vite";
-import importMapPlugin from "vite-plugin-import-map";
+import importMapPlugin from "@titovdima/vite-plugin-import-map";
 
 export default defineConfig({
   plugins: [
@@ -70,7 +70,7 @@ Then use the plugin like this:
 
 ```ts
 import { defineConfig } from "vite";
-import importMapPlugin from "vite-plugin-import-map";
+import importMapPlugin from "@titovdima/vite-plugin-import-map";
 
 export default defineConfig({
   plugins: [
