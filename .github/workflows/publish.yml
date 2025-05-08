@@ -40,14 +40,6 @@ jobs:
       - name: Bump version
         run: npm version patch --no-git-tag-version
 
-      - name: Commit version bump
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git add package.json package-lock.json
-          git commit -m "chore: bump version"
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/dimatitov/vite-plugin-import-map.git HEAD:${{ github.ref_name }}
-
       - name: Publish
         run: npm publish --access public
         env:

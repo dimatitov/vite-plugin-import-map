@@ -36,10 +36,7 @@ All notable changes to this project will be documented in this file.
 
 ## [1.2.4] - 2024-05-08
 
-### Added
-
-- `publish.yml` add new job `Commit version bump`
-
 ### Fixed
 
 - Fix README `yarn add vite-plugin-module-alias --dev`
+- Up version
