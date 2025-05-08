@@ -27,3 +27,9 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - `publish.yml` for CI/CD in GitHub action
+
+## [1.2.2] - 2024-05-08
+
+### Fixed
+
+- Fix README `npm i`
