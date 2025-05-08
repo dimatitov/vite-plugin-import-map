@@ -152,6 +152,7 @@ import logo from "@assets/logo.png";
 | `imports`       | `Record<string, string>` | (optional) Inline import map. Only absolute paths starting with '/' are supported. **Use either `imports` or `importMapPath`—both at once will cause an error.** |
 | `importMapPath` | `string`                 | (optional) Path to external `import-map.json` file. **Use either `imports` or `importMapPath`—both at once will cause an error.**                                |
 | `tsconfigPath`  | `string`                 | (optional) Path to `tsconfig.json` or a variant (e.g. `tsconfig.app.json`) to auto-sync TypeScript paths.                                                        |
+| `autoRestart`   | `boolean`                | (optional) Automatically restarts Vite server when `importMapPath` changes. Default is `false`.                                                                  |
 
 > You must choose **either** `imports` **or** `importMapPath` — using both at the same time is not supported and will throw an error. This design ensures that the import map comes from only one source, preventing ambiguity.
 
@@ -204,6 +205,25 @@ This is necessary because the TypeScript Language Service in your IDE (e.g. VSCo
 - Alternatively, restart the Vite development server to reflect changes during runtime.
 
 ---
+
+### 🌀 Server Restart Behavior
+
+If you modify the `import-map.json` file while the dev server is running, you may need to restart Vite for changes to take full effect.
+
+You have two options:
+
+- **Manual restart**: The plugin will print a warning to remind you to restart the server.
+- **Automatic restart**: Set `autoRestart: true` in the plugin config to have Vite restart automatically.
+
+Note: Automatic restart uses Vite’s internal `server.restart()` API, which may change in future Vite versions. Use with care.
+
+```ts
+importMapPlugin({
+  importMapPath: "import-map.json",
+  tsconfigPath: "tsconfig.app.json",
+  autoRestart: true, // 🚀 auto-restarts Vite when import map changes
+});
+```
 
 ## 📌 Notes
 
