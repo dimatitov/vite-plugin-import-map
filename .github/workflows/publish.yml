@@ -46,7 +46,7 @@ jobs:
           git config user.email "actions@github.com"
           git add package.json package-lock.json
           git commit -m "chore: bump version"
-          git push origin ${{ github.ref }}
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/dimatitov/vite-plugin-import-map.git HEAD:${{ github.ref_name }}
 
       - name: Publish
         run: npm publish --access public
