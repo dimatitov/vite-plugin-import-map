@@ -20,14 +20,14 @@ export interface ImportMapPluginOptions {
 }
 
 export default function importMapPlugin(
-    options: ImportMapPluginOptions
+  options: ImportMapPluginOptions
 ): Plugin {
   const { imports, importMapPath } = options;
 
   let resolvedImports: Record<string, string> = imports ?? {};
 
   return {
-    name: "vite-plugin-import-map",
+    name: "vite-plugin-module-alias",
     enforce: "pre",
 
     config() {
@@ -46,13 +46,13 @@ export default function importMapPlugin(
       }
 
       resolvedImports = Object.fromEntries(
-          Object.entries(resolvedImports).map(([key, value]) => {
-            if (!value.startsWith("/")) {
-              value = path.resolve(process.cwd(), value);
-            }
+        Object.entries(resolvedImports).map(([key, value]) => {
+          if (!value.startsWith("/")) {
+            value = path.resolve(process.cwd(), value);
+          }
 
-            return [key, value];
-          })
+          return [key, value];
+        })
       );
 
       if (options.tsconfigPath) {
@@ -80,8 +80,8 @@ export default function importMapPlugin(
 
     handleHotUpdate({ file, server }) {
       if (
-          importMapPath &&
-          path.resolve(file) === path.resolve(process.cwd(), importMapPath)
+        importMapPath &&
+        path.resolve(file) === path.resolve(process.cwd(), importMapPath)
       ) {
         server.ws.send({
           type: "full-reload",

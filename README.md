@@ -1,10 +1,7 @@
-# `vite-plugin-import-map`
+# `vite-plugin-module-alias`
 
-[![npm version](https://img.shields.io/npm/v/@titovdima/vite-plugin-import-map.svg)](https://www.npmjs.com/package/@titovdima/vite-plugin-import-map)
+[![npm version](https://img.shields.io/npm/v/@titovdima/vite-plugin-module-alias.svg)](https://www.npmjs.com/package/@titovdima/vite-plugin-module-alias)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-> 📦 Prefer the public version?  
-> Use [`vite-plugin-module-alias`](https://www.npmjs.com/package/vite-plugin-module-alias) — same functionality, no scope, ideal for production use.
 
 A simple and flexible Vite plugin to inject an [Import Map](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap) into your project. Supports both inline import maps and external `import-map.json` file. Automatically reloads the Vite dev server when the map is updated.
 
@@ -61,13 +58,13 @@ Then let the plugin handle runtime resolution seamlessly.
 ## 📦 Installation
 
 ```bash
-npm install @titovdima/vite-plugin-import-map --save-dev
+npm install @titovdima/vite-plugin-module-alias --save-dev
 ```
 
 or
 
 ```bash
-yarn add @titovdima/vite-plugin-import-map --dev
+yarn add @titovdima/vite-plugin-module-alias --dev
 ```
 
 ---
@@ -80,7 +77,7 @@ You can configure the plugin in one of two ways — either by providing an inlin
 
 ```ts
 import { defineConfig } from "vite";
-import importMapPlugin from "@titovdima/vite-plugin-import-map";
+import importMapPlugin from "vite-plugin-module-alias";
 
 export default defineConfig({
   plugins: [
@@ -120,7 +117,7 @@ Then use the plugin like this:
 
 ```ts
 import { defineConfig } from "vite";
-import importMapPlugin from "@titovdima/vite-plugin-import-map";
+import importMapPlugin from "vite-plugin-module-alias";
 
 export default defineConfig({
   plugins: [

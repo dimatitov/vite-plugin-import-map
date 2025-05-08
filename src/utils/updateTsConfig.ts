@@ -14,7 +14,7 @@ export function updateTsConfig(
   const fullPath = path.resolve(process.cwd(), tsconfigPath);
   if (!fs.existsSync(fullPath)) {
     console.warn(
-      `[vite-plugin-import-map] tsconfig file not found: ${fullPath}`
+      `[vite-plugin-module-alias] tsconfig file not found: ${fullPath}`
     );
     return;
   }
@@ -30,7 +30,7 @@ export function updateTsConfig(
     if (!tsconfig.compilerOptions.baseUrl) {
       tsconfig.compilerOptions.baseUrl = ".";
       console.log(
-        `[vite-plugin-import-map] Setting baseUrl to "." in ${tsconfigPath}`
+        `[vite-plugin-module-alias] Setting baseUrl to "." in ${tsconfigPath}`
       );
     }
 
@@ -56,14 +56,14 @@ export function updateTsConfig(
 
     fs.writeFileSync(fullPath, JSON.stringify(tsconfig, null, 2));
     console.log(
-      `[vite-plugin-import-map] Updated ${tsconfigPath} with import aliases`
+      `[vite-plugin-module-alias] Updated ${tsconfigPath} with import aliases`
     );
     console.log(
-      `[vite-plugin-import-map] To apply updated TypeScript paths, restart the TypeScript server in your editor.`
+      `[vite-plugin-module-alias] To apply updated TypeScript paths, restart the TypeScript server in your editor.`
     );
   } catch (err) {
     console.error(
-      `[vite-plugin-import-map] Failed to update ${tsconfigPath}:`,
+      `[vite-plugin-module-alias] Failed to update ${tsconfigPath}:`,
       err
     );
   }
