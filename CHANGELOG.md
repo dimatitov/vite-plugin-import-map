@@ -15,3 +15,9 @@ All notable changes to this project will be documented in this file.
 
 - Normalized relative paths to absolute project paths in `tsconfig`.
 - Ensured correct handling of `baseUrl` and alias formatting.
+
+## [1.2.1] - 2024-05-08
+
+### Fixed
+
+- Fix title `Server Restart Behavior` in readme.

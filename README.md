@@ -58,6 +58,8 @@ To keep type resolution working in your IDE, continue to define aliases in your 
 
 Then let the plugin handle runtime resolution seamlessly.
 
+---
+
 ## 📦 Installation
 
 ```bash
@@ -206,7 +208,7 @@ This is necessary because the TypeScript Language Service in your IDE (e.g. VSCo
 
 ---
 
-### 🌀 Server Restart Behavior
+## Server Restart Behavior
 
 If you modify the `import-map.json` file while the dev server is running, you may need to restart Vite for changes to take full effect.
 
@@ -224,6 +226,8 @@ importMapPlugin({
   autoRestart: true, // 🚀 auto-restarts Vite when import map changes
 });
 ```
+
+---
 
 ## 📌 Notes
 
