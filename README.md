@@ -60,13 +60,13 @@ Then let the plugin handle runtime resolution seamlessly.
 ## 📦 Installation
 
 ```bash
-npm install @titovdima/vite-plugin-module-alias --save-dev
+npm install vite-plugin-module-alias --save-dev
 ```
 
 or
 
 ```bash
-yarn add @titovdima/vite-plugin-module-alias --dev
+yarn add vite-plugin-module-alias) --dev
 ```
 
 ---
