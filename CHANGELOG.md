@@ -21,3 +21,9 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Fix title `Server Restart Behavior` in readme.
+
+## [1.2.2] - 2024-05-08
+
+### Added
+
+- `publish.yml` for CI/CD in GitHub action

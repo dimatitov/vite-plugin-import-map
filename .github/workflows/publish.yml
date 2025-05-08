@@ -1,0 +1,46 @@
+name: Publish to npm
+
+on:
+  push:
+    branches:
+      - master
+      - scoped-version
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Set npm package name for dev branch
+        if: github.ref_name == 'scoped-version'
+        run: |
+          echo "Setting name to vite-plugin-module-alias"
+          npm pkg set name=vite-plugin-module-alias
+
+      - name: Set npm package name for main branch
+        if: github.ref_name == 'master'
+        run: |
+          echo "Setting name to @titovdima/vite-plugin-import-map"
+          npm pkg set name=@titovdima/vite-plugin-import-map
+
+      - name: Bump version
+        run: npm version patch --no-git-tag-version
+
+      - name: Publish
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
