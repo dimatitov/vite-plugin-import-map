@@ -1,6 +1,6 @@
 # `vite-plugin-module-alias`
 
-[![npm version](https://img.shields.io/npm/v/@titovdima/vite-plugin-module-alias.svg)](https://www.npmjs.com/package/@titovdima/vite-plugin-module-alias)
+[![npm version](https://img.shields.io/npm/v/vite-plugin-module-alias.svg)](https://www.npmjs.com/package/vite-plugin-module-alias)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A simple and flexible Vite plugin to inject an [Import Map](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap) into your project. Supports both inline import maps and external `import-map.json` file. Automatically reloads the Vite dev server when the map is updated.
