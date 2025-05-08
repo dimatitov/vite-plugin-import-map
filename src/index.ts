@@ -17,12 +17,16 @@ export interface ImportMapPluginOptions {
    * Whether to update tsconfig.json with import map entries. Default is false.
    */
   tsconfigPath?: string;
+  /**
+   * Automatically restart Vite server on import map change. Default is false.
+   */
+  autoRestart?: boolean;
 }
 
 export default function importMapPlugin(
   options: ImportMapPluginOptions
 ): Plugin {
-  const { imports, importMapPath } = options;
+  const { imports, importMapPath, autoRestart = false, tsconfigPath } = options;
 
   let resolvedImports: Record<string, string> = imports ?? {};
 
@@ -41,7 +45,7 @@ export default function importMapPlugin(
             console.log("Import aliases:", resolvedImports);
           }
         } catch (error) {
-          console.error("Не удалось загрузить import-map.json:", error);
+          console.error("Failed to load import-map.json:", error);
         }
       }
 
@@ -55,8 +59,13 @@ export default function importMapPlugin(
         })
       );
 
-      if (options.tsconfigPath) {
-        updateTsConfig(resolvedImports, options.tsconfigPath);
+      console.log(
+        `[vite-plugin-import-map] Updated import map with aliases:`,
+        resolvedImports
+      );
+
+      if (tsconfigPath) {
+        updateTsConfig(resolvedImports, tsconfigPath);
       }
 
       return {
@@ -83,9 +92,38 @@ export default function importMapPlugin(
         importMapPath &&
         path.resolve(file) === path.resolve(process.cwd(), importMapPath)
       ) {
-        server.ws.send({
-          type: "full-reload",
-        });
+        try {
+          const fileContents = fs.readFileSync(file, "utf-8");
+          const parsedData = JSON.parse(fileContents);
+
+          if (parsedData.imports) {
+            resolvedImports = parsedData.imports;
+            console.log(
+              "[vite-plugin-import-map] Updated import map on the fly:",
+              resolvedImports
+            );
+          }
+
+          if (autoRestart) {
+            console.log(
+              "[vite-plugin-import-map] Restarting Vite server to apply changes..."
+            );
+            server.restart();
+          } else {
+            console.log(
+              "[vite-plugin-import-map] Import map updated. Please restart Vite manually to apply changes."
+            );
+          }
+
+          server.ws.send({
+            type: "full-reload",
+          });
+        } catch (error) {
+          console.error(
+            "[vite-plugin-import-map] Error reading or parsing import-map.json:",
+            error
+          );
+        }
       }
     },
   };
