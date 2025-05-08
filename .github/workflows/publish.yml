@@ -40,6 +40,14 @@ jobs:
       - name: Bump version
         run: npm version patch --no-git-tag-version
 
+      - name: Commit version bump
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add package.json package-lock.json
+          git commit -m "chore: bump version"
+          git push origin ${{ github.ref }}
+
       - name: Publish
         run: npm publish --access public
         env:

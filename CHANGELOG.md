@@ -33,3 +33,9 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Fix README `npm i`
+
+## [1.2.3] - 2024-05-08
+
+### Fixed
+
+- Fix README `yarn add vite-plugin-module-alias --dev`

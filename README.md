@@ -66,7 +66,7 @@ npm install vite-plugin-module-alias --save-dev
 or
 
 ```bash
-yarn add vite-plugin-module-alias) --dev
+yarn add vite-plugin-module-alias --dev
 ```
 
 ---
