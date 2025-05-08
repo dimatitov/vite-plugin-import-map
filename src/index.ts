@@ -2,6 +2,8 @@ import { Plugin } from "vite";
 import path from "path";
 import fs from "fs";
 
+import { updateTsConfig } from "./utils/updateTsConfig";
+
 export interface ImportMapPluginOptions {
   /**
    * Directly specify import map entries. Optional, can also use importMapPath.
@@ -11,10 +13,14 @@ export interface ImportMapPluginOptions {
    * Path to an import map JSON file. Optional, can also use imports.
    */
   importMapPath?: string;
+  /**
+   * Whether to update tsconfig.json with import map entries. Default is false.
+   */
+  tsconfigPath?: string;
 }
 
 export default function importMapPlugin(
-  options: ImportMapPluginOptions
+    options: ImportMapPluginOptions
 ): Plugin {
   const { imports, importMapPath } = options;
 
@@ -40,14 +46,18 @@ export default function importMapPlugin(
       }
 
       resolvedImports = Object.fromEntries(
-        Object.entries(resolvedImports).map(([key, value]) => {
-          if (!value.startsWith("/")) {
-            value = path.resolve(process.cwd(), value);
-          }
+          Object.entries(resolvedImports).map(([key, value]) => {
+            if (!value.startsWith("/")) {
+              value = path.resolve(process.cwd(), value);
+            }
 
-          return [key, value];
-        })
+            return [key, value];
+          })
       );
+
+      if (options.tsconfigPath) {
+        updateTsConfig(resolvedImports, options.tsconfigPath);
+      }
 
       return {
         resolve: {
@@ -70,8 +80,8 @@ export default function importMapPlugin(
 
     handleHotUpdate({ file, server }) {
       if (
-        importMapPath &&
-        path.resolve(file) === path.resolve(process.cwd(), importMapPath)
+          importMapPath &&
+          path.resolve(file) === path.resolve(process.cwd(), importMapPath)
       ) {
         server.ws.send({
           type: "full-reload",

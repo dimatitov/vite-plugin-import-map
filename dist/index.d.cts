@@ -9,6 +9,10 @@ interface ImportMapPluginOptions {
      * Path to an import map JSON file. Optional, can also use imports.
      */
     importMapPath?: string;
+    /**
+     * Whether to update tsconfig.json with import map entries. Default is false.
+     */
+    tsconfigPath?: string;
 }
 declare function importMapPlugin(options: ImportMapPluginOptions): Plugin;
 

@@ -33,8 +33,68 @@ __export(src_exports, {
   default: () => importMapPlugin
 });
 module.exports = __toCommonJS(src_exports);
-var import_path = __toESM(require("path"), 1);
+var import_path2 = __toESM(require("path"), 1);
+var import_fs2 = __toESM(require("fs"), 1);
+
+// src/utils/updateTsConfig.ts
 var import_fs = __toESM(require("fs"), 1);
+var import_path = __toESM(require("path"), 1);
+var import_strip_json_comments = __toESM(require("strip-json-comments"), 1);
+function makeRelativePath(p) {
+  const relative = import_path.default.relative(process.cwd(), p).replace(/\\/g, "/");
+  return relative.endsWith("/") ? `${relative}*` : `${relative}/*`;
+}
+function updateTsConfig(imports, tsconfigPath) {
+  const fullPath = import_path.default.resolve(process.cwd(), tsconfigPath);
+  if (!import_fs.default.existsSync(fullPath)) {
+    console.warn(
+      `[vite-plugin-import-map] tsconfig file not found: ${fullPath}`
+    );
+    return;
+  }
+  try {
+    const raw = import_fs.default.readFileSync(fullPath, "utf-8");
+    const tsconfig = JSON.parse((0, import_strip_json_comments.default)(raw));
+    tsconfig.compilerOptions = tsconfig.compilerOptions || {};
+    tsconfig.compilerOptions.paths = tsconfig.compilerOptions.paths || {};
+    if (!tsconfig.compilerOptions.baseUrl) {
+      tsconfig.compilerOptions.baseUrl = ".";
+      console.log(
+        `[vite-plugin-import-map] Setting baseUrl to "." in ${tsconfigPath}`
+      );
+    }
+    const newKeys = Object.keys(imports).map(
+      (k) => (k.endsWith("/") ? k : `${k}/`) + "*"
+    );
+    const paths = tsconfig.compilerOptions.paths;
+    Object.keys(paths).forEach((existingKey) => {
+      const isGenerated = existingKey.endsWith("/*") && existingKey.includes("/");
+      const isObsolete = !newKeys.includes(existingKey);
+      if (isGenerated && isObsolete) {
+        delete paths[existingKey];
+      }
+    });
+    Object.entries(imports).forEach(([key, value]) => {
+      const aliasKey = key.endsWith("/") ? `${key}*` : `${key}/*`;
+      const normalizedPath = makeRelativePath(value);
+      paths[aliasKey] = [normalizedPath];
+    });
+    import_fs.default.writeFileSync(fullPath, JSON.stringify(tsconfig, null, 2));
+    console.log(
+      `[vite-plugin-import-map] Updated ${tsconfigPath} with import aliases`
+    );
+    console.log(
+      `[vite-plugin-import-map] To apply updated TypeScript paths, restart the TypeScript server in your editor.`
+    );
+  } catch (err) {
+    console.error(
+      `[vite-plugin-import-map] Failed to update ${tsconfigPath}:`,
+      err
+    );
+  }
+}
+
+// src/index.ts
 function importMapPlugin(options) {
   const { imports, importMapPath } = options;
   let resolvedImports = imports ?? {};
@@ -44,8 +104,8 @@ function importMapPlugin(options) {
     config() {
       if (importMapPath) {
         try {
-          const resolvedPath = import_path.default.resolve(process.cwd(), importMapPath);
-          const fileContents = import_fs.default.readFileSync(resolvedPath, "utf-8");
+          const resolvedPath = import_path2.default.resolve(process.cwd(), importMapPath);
+          const fileContents = import_fs2.default.readFileSync(resolvedPath, "utf-8");
           const parsedData = JSON.parse(fileContents);
           if (parsedData.imports) {
             resolvedImports = parsedData.imports;
@@ -58,11 +118,14 @@ function importMapPlugin(options) {
       resolvedImports = Object.fromEntries(
         Object.entries(resolvedImports).map(([key, value]) => {
           if (!value.startsWith("/")) {
-            value = import_path.default.resolve(process.cwd(), value);
+            value = import_path2.default.resolve(process.cwd(), value);
           }
           return [key, value];
         })
       );
+      if (options.tsconfigPath) {
+        updateTsConfig(resolvedImports, options.tsconfigPath);
+      }
       return {
         resolve: {
           alias: Object.entries(resolvedImports).map(([key, value]) => {
@@ -81,7 +144,7 @@ function importMapPlugin(options) {
       return html.replace("</head>", `${scriptTag}</head>`);
     },
     handleHotUpdate({ file, server }) {
-      if (importMapPath && import_path.default.resolve(file) === import_path.default.resolve(process.cwd(), importMapPath)) {
+      if (importMapPath && import_path2.default.resolve(file) === import_path2.default.resolve(process.cwd(), importMapPath)) {
         server.ws.send({
           type: "full-reload"
         });
