@@ -1,4 +1,4 @@
-<file name=0 path=/Users/dimatitov/WebstormProjects/vite-plugin-import-map/README.md># `vite-plugin-import-map`
+# `vite-plugin-import-map`
 
 [![npm version](https://img.shields.io/npm/v/@titovdima/vite-plugin-import-map.svg)](https://www.npmjs.com/package/@titovdima/vite-plugin-import-map)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -13,6 +13,7 @@ A simple and flexible Vite plugin to inject an [Import Map](https://developer.mo
 - Supports inline `imports` or external `import-map.json` file
 - Watches and triggers full reload on import map file changes
 - Resolves import aliases in dev and marks them as external in production
+- Optionally syncs TypeScript `paths` by updating `tsconfig.json`
 
 ---
 
@@ -26,6 +27,9 @@ This plugin closes that gap by:
 - Letting browsers resolve imports using native import maps
 - Updating Vite’s `resolve.alias` so your dev environment aligns with your runtime
 - Watching external `import-map.json` for changes and reloading automatically
+- Optionally syncs aliases to your `tsconfig.json` file via the `tsconfigPath` option
+- Automatically removes outdated aliases from `paths` to keep things clean
+- Keeps TypeScript, IDE, Vite, and browser resolution fully aligned
 
 Together, this ensures:
 
@@ -140,19 +144,68 @@ import logo from "@assets/logo.png";
 
 ## ⚙️ Plugin Options
 
-| Option          | Type                     | Description                                                                        |
-| --------------- | ------------------------ | ---------------------------------------------------------------------------------- |
-| `imports`       | `Record<string, string>` | (optional) Inline import map. Only absolute paths starting with '/' are supported. |
-| `importMapPath` | `string`                 | (optional) Path to external `import-map.json` file                                 |
+| Option          | Type                     | Description                                                                                                                                                      |
+| --------------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `imports`       | `Record<string, string>` | (optional) Inline import map. Only absolute paths starting with '/' are supported. **Use either `imports` or `importMapPath`—both at once will cause an error.** |
+| `importMapPath` | `string`                 | (optional) Path to external `import-map.json` file. **Use either `imports` or `importMapPath`—both at once will cause an error.**                                |
+| `tsconfigPath`  | `string`                 | (optional) Path to `tsconfig.json` or a variant (e.g. `tsconfig.app.json`) to auto-sync TypeScript paths.                                                        |
 
-> You must choose **either** `imports` **or** `file` — using both at the same time is not supported and will throw an error. This design prevents ambiguity and ensures the import map is sourced from only one location.
+> You must choose **either** `imports` **or** `importMapPath` — using both at the same time is not supported and will throw an error. This design ensures that the import map comes from only one source, preventing ambiguity.
+
+---
+
+## 🔧 TypeScript Path Syncing
+
+When you specify the `tsconfigPath` option, the plugin will automatically update your TypeScript configuration to match your import map. This keeps editor IntelliSense and compile-time path resolution in sync with your runtime aliases.
+
+- Aliases will be written to the `compilerOptions.paths` section.
+- Any aliases removed from the import map will also be cleaned up in the tsconfig file.
+- The plugin ensures paths use the `@alias/*` → `path/to/*` format required by TypeScript.
+
+```md
+If `baseUrl` is not set, the plugin will default it to `"."` to ensure paths work as expected.
+```
+
+This is because TypeScript requires a baseUrl to correctly resolve paths, and "." ensures that all aliases are resolved relative to the project root.
+
+> ℹ️ After aliases are updated, **you may need to restart the TypeScript server** in your IDE for changes to take effect. Restarting the server ensures that all changes are applied.
+
+### Example: tsconfig.app.json
+
+If you are using a project references setup, you may want to sync aliases into `tsconfig.app.json` instead of the root `tsconfig.json`.
+
+```ts
+importMapPlugin({
+  importMapPath: "import-map.json",
+  tsconfigPath: "tsconfig.app.json",
+});
+```
+
+And the plugin will produce:
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@utils/*": ["src/utils/*"]
+    }
+  }
+}
+```
+
+This is necessary because the TypeScript Language Service in your IDE (e.g. VSCode) does not automatically reload the `tsconfig.json` file when it is modified. To apply the changes, you must restart the TypeScript server:
+
+- In **VSCode**, use `Ctrl+Shift+P` → **TypeScript: Restart TS Server**.
+- Alternatively, restart the Vite development server to reflect changes during runtime.
 
 ---
 
 ## 📌 Notes
 
 - The plugin injects the import map only in development.
-- In production, paths are marked as external in the bundle.
+- In production, paths are marked as external in the bundle, ensuring that imports are resolved correctly during runtime.
 
 ---
 
@@ -160,13 +213,19 @@ import logo from "@assets/logo.png";
 
 Planned features:
 
+- [x] Plugin option to auto-sync with tsconfig paths
+- [x] Automatic cleanup of removed aliases from tsconfig
 - [ ] Support for dynamic import maps in production
-- [ ] Plugin option to auto-sync with tsconfig paths
 - [ ] Better diagnostics for conflicting aliases
+
+---
+
+## 🧩 Dependencies
+
+This plugin uses [`strip-json-comments`](https://github.com/sindresorhus/strip-json-comments) under the hood to safely parse `tsconfig.json` files that may contain comments. This package is MIT licensed and widely used in projects like ESLint, tsconfig-paths, and more.
 
 ---
 
 ## 📄 License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
-</file>

@@ -1,6 +1,6 @@
 {
   "name": "@titovdima/vite-plugin-import-map",
-  "version": "0.2.4",
+  "version": "1.0.0",
   "description": "A simple and flexible Vite plugin to inject and watch import maps with support for JSON files. Supports inline definitions and external configuration.",
   "repository": {
     "type": "git",
@@ -36,6 +36,9 @@
   "license": "MIT",
   "peerDependencies": {
     "vite": ">=4"
+  },
+  "dependencies": {
+    "strip-json-comments": "^5.0.1"
   },
   "devDependencies": {
     "@types/node": "^22.15.11",
