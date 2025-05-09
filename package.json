@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-module-alias",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "A simple and flexible Vite plugin to inject and watch import maps with support for JSON files. Supports inline definitions and external configuration.",
   "repository": {
     "type": "git",

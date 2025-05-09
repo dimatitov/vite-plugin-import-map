@@ -40,3 +40,19 @@ All notable changes to this project will be documented in this file.
 
 - Fix README `yarn add vite-plugin-module-alias --dev`
 - Up version
+
+## [1.2.5] - 2024-05-08
+
+### Fixed
+
+- Fix README
+
+## [1.2.6] - 2024-05-09
+
+### Added
+
+- Add new information for tsconfig
+
+### Fixed
+
+- Fixed an issue in `makeRelativePath` where paths starting with `/` were handled incorrectly.
