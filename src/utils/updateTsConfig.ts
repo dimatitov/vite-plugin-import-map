@@ -3,9 +3,15 @@ import path from "path";
 import stripJsonComments from "strip-json-comments";
 
 function makeRelativePath(p: string): string {
+  if (p.startsWith("/src")) {
+    const trimmed = p.replace(/^\/+/, "");
+    const normalized = trimmed.replace(/\\/g, "/");
+    return normalized.endsWith("/") ? `${normalized}*` : `${normalized}/*`;
+  }
   const relative = path.relative(process.cwd(), p).replace(/\\/g, "/");
   return relative.endsWith("/") ? `${relative}*` : `${relative}/*`;
 }
+
 
 export function updateTsConfig(
   imports: Record<string, string>,

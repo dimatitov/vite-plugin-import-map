@@ -27,3 +27,26 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - `publish.yml` for CI/CD in GitHub action
+
+## [1.2.3] - 2024-05-08
+
+### Fixed
+
+- Fix README `npm i`
+
+## [1.2.4] - 2024-05-08
+
+### Fixed
+
+- Fix README `yarn add vite-plugin-module-alias --dev`
+- Up version
+
+## [1.2.5] - 2024-05-09
+
+### Added
+
+- Add new information for tsconfig
+
+### Fixed
+
+- Fixed an issue in `makeRelativePath` where paths starting with `/` were handled incorrectly.

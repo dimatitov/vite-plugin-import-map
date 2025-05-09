@@ -156,6 +156,8 @@ import logo from "@assets/logo.png";
 | `tsconfigPath`  | `string`                 | (optional) Path to `tsconfig.json` or a variant (e.g. `tsconfig.app.json`) to auto-sync TypeScript paths.                                                        |
 | `autoRestart`   | `boolean`                | (optional) Automatically restarts Vite server when `importMapPath` changes. Default is `false`.                                                                  |
 
+⚠️**Note!!!**: Currently, comments in the `tsconfig.json` may be removed when the file is automatically updated by the plugin. We plan to address this issue in a future patch.
+
 > You must choose **either** `imports` **or** `importMapPath` — using both at the same time is not supported and will throw an error. This design ensures that the import map comes from only one source, preventing ambiguity.
 
 ---
