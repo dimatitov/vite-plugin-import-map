@@ -62,11 +62,17 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - remove CJS
-- 
+
 ## [1.2.8] - 2024-05-12
 
 ### Fixed
 
 - add info in README "type": "module"
 - remove dir dist from github 
+
+## [1.2.9] - 2024-05-12
+
+### Fixed
+
+- hot fix: add dist in package
 
