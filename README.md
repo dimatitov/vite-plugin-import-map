@@ -74,6 +74,16 @@ yarn add @titovdima/vite-plugin-import-map --dev
 
 ---
 
+## 🔧 Project Setup
+This project uses ECMAScript Modules (ESM). To ensure it works correctly, make sure the following flag is set in your package.json:
+
+```json
+{
+  "type": "module"
+}
+```
+
+
 ## 🚀 Usage
 
 You can configure the plugin in one of two ways — either by providing an inline `imports` object directly in your `vite.config.ts`, or by specifying a path to an external `import-map.json` file. **Do not use both at once.**
