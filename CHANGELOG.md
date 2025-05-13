@@ -50,3 +50,9 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Fixed an issue in `makeRelativePath` where paths starting with `/` were handled incorrectly.
+
+## [1.2.7] - 2024-05-12
+
+### Fixed
+
+- remove CJS
