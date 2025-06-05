@@ -16,8 +16,8 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install deps
         run: npm ci
@@ -27,18 +27,22 @@ jobs:
 
       - name: Set npm package name for dev branch
         if: github.ref_name == 'scoped-version'
-        run: |
-          echo "Setting name to vite-plugin-module-alias"
-          npm pkg set name=vite-plugin-module-alias
+        run: npm pkg set name=vite-plugin-module-alias
 
       - name: Set npm package name for main branch
         if: github.ref_name == 'master'
-        run: |
-          echo "Setting name to @titovdima/vite-plugin-import-map"
-          npm pkg set name=@titovdima/vite-plugin-import-map
+        run: npm pkg set name=@titovdima/vite-plugin-import-map
 
       - name: Bump version
-        run: npm version patch --no-git-tag-version
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          npm version patch -m "chore(release): %s"
+
+      - name: Push changes and tags
+        run: |
+          git push origin HEAD
+          git push origin --tags
 
       - name: Publish
         run: npm publish --access public
