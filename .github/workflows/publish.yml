@@ -6,6 +6,9 @@ on:
       - master
       - scoped-version
 
+permissions:
+  contents: write
+
 jobs:
   publish:
     runs-on: ubuntu-latest
