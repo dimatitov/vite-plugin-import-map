@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## [1.3.4] - 2025-06-05
 
+### Fixed
+
+- Normalize version
+
+## [1.3.4] - 2025-06-05
+
 ### Added
 
 - Add `Contributors` in README
