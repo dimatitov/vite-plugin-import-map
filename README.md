@@ -163,7 +163,7 @@ import logo from "@assets/logo.png";
 | `tsconfigPath`  | `string`                 | (optional) Path to `tsconfig.json` or a variant (e.g. `tsconfig.app.json`) to auto-sync TypeScript paths.                                                        |
 | `autoRestart`   | `boolean`                | (optional) Automatically restarts Vite server when `importMapPath` changes. Default is `false`.                                                                  |
 
-⚠️**Note!!!**: Currently, comments in the `tsconfig.json` may be removed when the file is automatically updated by the plugin. We plan to address this issue in a future patch.
+✅ Comments in `tsconfig.json` are now preserved when the plugin syncs paths — no more stripped-out comments, thanks to the switch to `comment-json`!
 
 > You must choose **either** `imports` **or** `importMapPath` — using both at the same time is not supported and will throw an error. This design ensures that the import map comes from only one source, preventing ambiguity.
 
@@ -256,9 +256,17 @@ Planned features:
 
 ---
 
+## 🙌 Contributors
+
+Thanks to these awesome people for their contributions:
+
+- [@itisArshdeep](https://github.com/itisArshdeep) – added support for preserving comments in `tsconfig.json` using `comment-json`
+
+---
+
 ## 🧩 Dependencies
 
-This plugin uses [`strip-json-comments`](https://github.com/sindresorhus/strip-json-comments) under the hood to safely parse `tsconfig.json` files that may contain comments. This package is MIT licensed and widely used in projects like ESLint, tsconfig-paths, and more.
+This plugin uses [`comment-json`](https://www.npmjs.com/package/comment-json) to safely read and write `tsconfig.json` files while preserving comments.
 
 ---
 
