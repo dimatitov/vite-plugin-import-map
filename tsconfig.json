@@ -8,6 +8,8 @@
     "strict": true,
     "declaration": true,
     "declarationDir": "dist",
+    // nsjdfhasdf
+    
     "outDir": "dist",
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true

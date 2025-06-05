@@ -39,6 +39,7 @@
     "vite": ">=4"
   },
   "dependencies": {
+    "comment-json": "^4.2.5",
     "strip-json-comments": "^5.0.1"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import stripJsonComments from "strip-json-comments";
+import * as commentJson from "comment-json";
 
 function makeRelativePath(p: string): string {
   if (p.startsWith("/src")) {
@@ -11,7 +11,6 @@ function makeRelativePath(p: string): string {
   const relative = path.relative(process.cwd(), p).replace(/\\/g, "/");
   return relative.endsWith("/") ? `${relative}*` : `${relative}/*`;
 }
-
 
 export function updateTsConfig(
   imports: Record<string, string>,
@@ -27,7 +26,7 @@ export function updateTsConfig(
 
   try {
     const raw = fs.readFileSync(fullPath, "utf-8");
-    const tsconfig = JSON.parse(stripJsonComments(raw));
+    const tsconfig = commentJson.parse(raw);
 
     tsconfig.compilerOptions = tsconfig.compilerOptions || {};
     tsconfig.compilerOptions.paths = tsconfig.compilerOptions.paths || {};
@@ -60,7 +59,8 @@ export function updateTsConfig(
       paths[aliasKey] = [normalizedPath];
     });
 
-    fs.writeFileSync(fullPath, JSON.stringify(tsconfig, null, 2));
+    // THIS IS THE IMPORTANT CHANGE - use commentJson.stringify instead of JSON.stringify
+    fs.writeFileSync(fullPath, commentJson.stringify(tsconfig, null, 2));
     console.log(
       `[vite-plugin-import-map] Updated ${tsconfigPath} with import aliases`
     );
