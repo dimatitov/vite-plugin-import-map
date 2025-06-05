@@ -259,6 +259,14 @@ Planned features:
 
 ---
 
+## 🙌 Contributors
+
+Thanks to these awesome people for their contributions:
+
+- [@itisArshdeep](https://github.com/itisArshdeep) – added support for preserving comments in `tsconfig.json` using `comment-json`
+
+---
+
 ## 🧩 Dependencies
 
 This plugin uses [`comment-json`](https://www.npmjs.com/package/comment-json) to safely read and write `tsconfig.json` files while preserving comments.

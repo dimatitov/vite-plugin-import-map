@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.4] - 2025-06-05
+
+### Added
+
+- Add `Contributors` in README
+
+## [1.3.3] - 2025-06-05
+
+### Changed
+
+- Switched from `strip-json-comments` to [`comment-json`](https://github.com/zeke/comment-json) for reading and writing `tsconfig.json`, preserving comments when syncing paths.
+
+### Thanks
+
+- Big thanks to [@itisArshdeep](https://github.com/itisArshdeep) for implementing this improvement!
+
 ## [1.2.0] - 2024-05-08
 
 ### Added
